@@ -16,7 +16,7 @@ export default {
     },
     
     ref (state, getters, rootState) {
-      return dbBillsRef.child(`${rootState.user.currentUser.uid}/period-${rootState.payPeriod}`)
+      return dbBillsRef.child(`${rootState.user.currentUser.uid}/period-${rootState.mgmtPayPeriod}`)
     },
   },
 

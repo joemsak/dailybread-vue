@@ -52,12 +52,14 @@
     </div>
     
     <div class="text-right">
-      <strong>Remaining: {{ remaining | currency }}</strong>
+      <strong>Remaining: {{ remaining() | currency }}</strong>
     </div>
   </form>
 </template>
 
 <script>
+import moment from 'moment'
+
 import { mapGetters } from 'vuex'
 
 export default {
@@ -71,7 +73,7 @@ export default {
 
   methods: {
     handleSubmit() {
-      this.newExpense.madeOn = new Date().toString()
+      this.newExpense.madeOn = moment().format()
 
       this.$store.dispatch('expenses/add', this.newExpense)
         .then(() => {

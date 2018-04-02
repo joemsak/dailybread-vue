@@ -1,5 +1,6 @@
 import { firebaseAction } from 'vuexfire'
 import _ from 'lodash'
+import moment from 'moment'
 
 import { dbExpensesRef } from '@/firebaseConfig'
 
@@ -9,8 +10,13 @@ export default {
   },
 
   getters: {
-    total (state) {
-      return _.reduce(state.expenses, (acc, expense) => {
+    total: (state) => (prevPayDate, nextPayDate) => {
+      const expenses = _.filter(state.expenses, e => {
+        return moment(e.madeOn).isAfter(prevPayDate) &&
+                 moment(e.madeOn).isBefore(nextPayDate)
+      })
+
+      return _.reduce(expenses, (acc, expense) => {
         return acc += parseFloat(expense.amount)
       }, 0)
     },

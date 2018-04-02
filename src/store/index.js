@@ -6,6 +6,8 @@ import expenses from './expenses'
 import bills from './bills'
 import user from './user'
 
+import moment from 'moment'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -27,18 +29,64 @@ export default new Vuex.Store({
   },
 
   state: {
-    payPeriod: 1,
+    mgmtPayPeriod: 1,
+    currentPayPeriod: 1,
   },
 
   getters: { 
-    remaining (state, getters) {
-      return 3750 - getters['bills/total'] - getters['expenses/total']
+    nextPayDate: (state) => (desiredPayPeriod) => {
+      desiredPayPeriod = desiredPayPeriod || state.currentPayPeriod
+      let endingDate
+
+      if (desiredPayPeriod === 1) {
+        endingDate = moment().date(15)
+      } else {
+        endingDate = moment().endOf('month')
+      }
+
+      while ([0, 6].includes(endingDate.day())) {
+        endingDate = endingDate.subtract(1, 'days')
+      }
+
+      return endingDate
+    },
+
+    previousPayDate: (state) => (desiredPayPeriod) => {
+      desiredPayPeriod = desiredPayPeriod || state.currentPayPeriod
+      let beginningDate
+
+      if (desiredPayPeriod === 1) {
+        beginningDate = moment().subtract(1, 'months').endOf('month')
+      } else {
+        beginningDate = moment().date(15)
+      }
+
+      while ([0, 6].includes(beginningDate.day())) {
+        beginningDate = beginningDate.subtract(1, 'days')
+      }
+
+      return beginningDate
+    },
+
+    remaining: (state, getters) => (desiredPayPeriod) => {
+      desiredPayPeriod = desiredPayPeriod || state.currentPayPeriod
+
+      return 3750 - 
+        getters['bills/total'] -
+          getters['expenses/total'](
+            getters.previousPayDate(desiredPayPeriod),
+            getters.nextPayDate(desiredPayPeriod)
+          )
     },
   },
 
   mutations: {
-    payPeriod (state, period) {
-      state.payPeriod = period
+    mgmtPayPeriod (state, period) {
+      state.mgmtPayPeriod = period
+    },
+
+    currentPayPeriod (state, period) {
+      state.currentPayPeriod = period
     },
 
     ...firebaseMutations,
@@ -53,10 +101,28 @@ export default new Vuex.Store({
         dispatch('expenses/set')
         dispatch('bills/set')
       }
+
+      let endingDate
+
+      if (moment().date() < 15) {
+        endingDate = moment().date(15)
+      } else {
+        endingDate = moment().endOf('month')
+      }
+
+      while([0, 6].includes(endingDate.day())) {
+        endingDate = endingDate.subtract(1, 'days')
+      }
+
+      if (endingDate.date() <= 15) {
+        commit('currentPayPeriod', 1)
+      } else {
+        commit('currentPayPeriod', 2)
+      }
     },
 
-    updatePayPeriod ({ commit, dispatch }, period) {
-      commit('payPeriod', period)
+    updateMgmtPayPeriod ({ commit, dispatch }, period) {
+      commit('mgmtPayPeriod', period)
       dispatch('bills/set')
     },
   },

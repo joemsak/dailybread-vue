@@ -40,7 +40,7 @@
     </div>
     
     <div class="text-right">
-      <strong>Remaining: {{ remaining | currency }}</strong>
+      <strong>Remaining: {{ remaining(mgmtPayPeriod) | currency }}</strong>
     </div>
   </form>
 </template>
@@ -55,6 +55,8 @@ export default {
     }
   },
   
+  props: ['mgmtPayPeriod'],
+
   computed: mapGetters(['remaining']),
 
   methods: {

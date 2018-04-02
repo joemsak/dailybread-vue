@@ -9,31 +9,31 @@
         <div class="sticky-top">
           <div class="col btn-group btn-group-toggle mb-3">
             <label
-              :class="['btn', 'btn-outline-secondary', payPeriod === 1 ? 'active' : '']"
+              :class="['btn', 'btn-outline-secondary', mgmtPayPeriod === 1 ? 'active' : '']"
               for="payPeriod1"
             >
               <input
                 class="form-check-input"
                 type="radio"
-                name="payPeriod"
+                name="mgmtPayPeriod"
                 id="payPeriod1"
                 value="1"
-                v-model.number="payPeriod"
+                v-model.number="mgmtPayPeriod"
               />
               1<sup>st</sup> pay period
             </label>
 
             <label
-              :class="['btn', 'btn-outline-secondary', payPeriod === 2 ? 'active' : '']"
+              :class="['btn', 'btn-outline-secondary', mgmtPayPeriod === 2 ? 'active' : '']"
               for="payPeriod2"
             >
               <input
                 class="form-check-input"
                 type="radio"
-                name="payPeriod"
+                name="mgmtPayPeriod"
                 id="payPeriod2"
                 value="2"
-                v-model.number="payPeriod"
+                v-model.number="mgmtPayPeriod"
               />
                 2<sup>nd</sup> pay period
             </label>
@@ -42,7 +42,7 @@
           <div class="card">
             <div class="card-body">
               <h3>Enter a new bill</h3>
-              <bills-form></bills-form>
+              <bills-form :mgmt-pay-period="mgmtPayPeriod"></bills-form>
             </div>
           </div>
         </div>
@@ -60,9 +60,11 @@ import BillsList from '@/components/bills/list'
 export default {
   data () {
     return {
-      payPeriod: 1,
+      mgmtPayPeriod: 1,
     }
   },
+
+  computed: mapState(['currentPayPeriod']),
 
   components: {
     BillsList,
@@ -70,15 +72,19 @@ export default {
   },
 
   watch: {
-    payPeriod () {
-      this.$store.dispatch('updatePayPeriod', this.payPeriod)
-      window.location.hash = `period-${this.payPeriod}`
+    mgmtPayPeriod () {
+      this.$store.dispatch('updateMgmtPayPeriod', this.mgmtPayPeriod)
+      window.location.hash = `period-${this.mgmtPayPeriod}`
     },
   },
 
   mounted () {
     let hash = window.location.hash
-    if (hash) this.payPeriod = parseInt(hash.split('-')[1])
+    if (!!hash.length) {
+      this.mgmtPayPeriod = parseInt(hash.split('-')[1])
+    } else {
+      this.mgmtPayPeriod = this.currentPayPeriod
+    }
   },
 };
 </script>
