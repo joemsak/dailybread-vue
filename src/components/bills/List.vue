@@ -27,7 +27,7 @@
     </table>
   </div>
 
-  <div v-else class="alert alert-notice" role="alert">
+  <div v-else class="alert alert-primary" role="alert">
     No bills to show yet ...
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
     ...mapGetters('bills', ['payPeriod1', 'payPeriod2']),
 
     bills () {
-      return this[`payPeriod${this.mgmtPayPeriod}`]
+      return this[`payPeriod${this.mgmtPayPeriod}`] || []
     },
   },
 
