@@ -1,5 +1,4 @@
 import { firebaseAction } from 'vuexfire'
-import _ from 'lodash'
 
 import { dbBillsRef } from '@/db/firebaseConfig'
 
@@ -13,7 +12,7 @@ export default {
   getters: {
     total: (state, getters) => (desiredPayPeriod) => {
       const bills = getters[`payPeriod${desiredPayPeriod}`]
-      return _.reduce(bills, (acc, bill) => {
+      return bills.reduce((acc, bill) => {
         return acc += parseFloat(bill.amount)
       }, 0)
     },
