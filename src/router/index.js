@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 import firebase from 'firebase'
 
-import Home from '@/components/Home'
 import SignUp from '@/components/SignUp'
 import UserProfile from '@/components/UserProfile'
 import Bills from '@/components/bills'
@@ -17,8 +16,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home,
+      name: 'Expenses',
+      component: Expenses,
     },
     {
       path: '/signup',

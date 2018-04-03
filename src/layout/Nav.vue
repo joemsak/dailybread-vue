@@ -1,6 +1,6 @@
 <template>  
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link :to="{ name: 'Home' }" class="navbar-brand">Dailybread</router-link>
+    <router-link to="/" class="navbar-brand">Dailybread</router-link>
 
     <button
       class="navbar-toggler"
