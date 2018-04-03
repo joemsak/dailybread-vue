@@ -25,11 +25,11 @@ export default new Vuex.Store({
     user: {
       namespaced: true,
       ...user,
-    }
+    },
   },
 
   state: {
-    mgmtPayPeriod: 1,
+    mgmtPayPeriod: null,
     currentPayPeriod: 1,
   },
 
@@ -69,10 +69,12 @@ export default new Vuex.Store({
     },
 
     remaining: (state, getters) => (desiredPayPeriod) => {
+      if (state.user.currentUser.guest) return 3750
+
       desiredPayPeriod = desiredPayPeriod || state.currentPayPeriod
 
       return 3750 - 
-        getters['bills/total'] -
+        getters['bills/total'](desiredPayPeriod) -
           getters['expenses/total'](
             getters.previousPayDate(desiredPayPeriod),
             getters.nextPayDate(desiredPayPeriod)
@@ -123,7 +125,6 @@ export default new Vuex.Store({
 
     updateMgmtPayPeriod ({ commit, dispatch }, period) {
       commit('mgmtPayPeriod', period)
-      dispatch('bills/set')
     },
   },
 })

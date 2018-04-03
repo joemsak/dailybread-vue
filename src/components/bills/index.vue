@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row mt-3">
       <div class="col-md-8 order-md-first order-last">
-        <bills-list></bills-list>
+        <bills-list :mgmt-pay-period="mgmtPayPeriod"></bills-list>
       </div>
 
       <div class="col-md-4 order-md-last order-first">
@@ -18,7 +18,7 @@
                 name="mgmtPayPeriod"
                 id="payPeriod1"
                 value="1"
-                v-model.number="mgmtPayPeriod"
+                @click="updateMgmtPayPeriod(1)"
               />
               1<sup>st</sup> pay period
             </label>
@@ -33,7 +33,7 @@
                 name="mgmtPayPeriod"
                 id="payPeriod2"
                 value="2"
-                v-model.number="mgmtPayPeriod"
+                @click="updateMgmtPayPeriod(2)"
               />
                 2<sup>nd</sup> pay period
             </label>
@@ -58,32 +58,27 @@ import BillsForm from '@/components/bills/form'
 import BillsList from '@/components/bills/list'
 
 export default {
-  data () {
-    return {
-      mgmtPayPeriod: 1,
-    }
-  },
-
-  computed: mapState(['currentPayPeriod']),
+  computed: mapState(['currentPayPeriod', 'mgmtPayPeriod']),
 
   components: {
     BillsList,
     BillsForm,
   },
 
-  watch: {
-    mgmtPayPeriod () {
-      this.$store.dispatch('updateMgmtPayPeriod', this.mgmtPayPeriod)
-      window.location.hash = `period-${this.mgmtPayPeriod}`
+  methods: {
+    updateMgmtPayPeriod (value) {
+      this.$store.dispatch('updateMgmtPayPeriod', value)
+      window.location.hash = `period-${value}`
     },
   },
 
   mounted () {
     let hash = window.location.hash
+
     if (!!hash.length) {
-      this.mgmtPayPeriod = parseInt(hash.split('-')[1])
-    } else {
-      this.mgmtPayPeriod = this.currentPayPeriod
+      this.$store.dispatch('updateMgmtPayPeriod', parseInt(hash.split('-')[1]))
+    } else if (!this.mgmtPayPeriod) {
+      this.$store.dispatch('updateMgmtPayPeriod', this.currentPayPeriod)
     }
   },
 };

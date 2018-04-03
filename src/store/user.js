@@ -32,7 +32,7 @@ export default {
         const user = firebase.auth().currentUser;
 
         user.updateProfile(payload).then(() => {
-          commit('setUser', user)
+          commit('user/set', user)
           resolve()
         }).catch(error => { reject(error) })
       })

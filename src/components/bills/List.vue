@@ -11,7 +11,7 @@
 
       <tbody>
         <tr
-          v-for="bill in bills.slice().reverse()"
+          v-for="bill in bills"
           :key="bill['.key']"
         >
           <td>{{ bill.name }}</td>
@@ -27,18 +27,26 @@
     </table>
   </div>
 
-  <div v-else class="alert alert-primary" role="alert">
-    No bills to show yet...
+  <div v-else class="alert alert-notice" role="alert">
+    No bills to show yet ...
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import RemoveBtn from '@/components/RemoveBtn'
 
 export default {
-  computed: mapState('bills', ['bills']),
+  computed: {
+    ...mapGetters('bills', ['payPeriod1', 'payPeriod2']),
+
+    bills () {
+      return this[`payPeriod${this.mgmtPayPeriod}`]
+    },
+  },
+
+  props: ['mgmtPayPeriod'],
 
   methods: {
     removeBill(bill) {
