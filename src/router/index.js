@@ -18,6 +18,9 @@ const router = new Router({
       path: '/',
       name: 'Expenses',
       component: Expenses,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/signup',

@@ -67,6 +67,7 @@ export default {
         this.newUser.password
       ).then(() => {
         this.attemptingSignUp = false
+        this.$router.push("/")
       }).catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           firebase.auth().signInWithEmailAndPassword(
@@ -74,6 +75,7 @@ export default {
             this.newUser.password
           ).then(() => {
             this.attemptingSignUp = false
+            this.$router.push("/")
           })
         } else {
           console.error(error.code)
