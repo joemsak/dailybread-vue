@@ -17,8 +17,19 @@
           <td>{{ bill.name }}</td>
           <td class="text-right">{{ bill.amount | currency }}</td>
           <td class="text-right">
-            <remove-btn
+            <action-btn
+              modifierClass="btn-outline-secondary"
+              tooltip="Edit this bill"
+              icon="feather/edit"
+              size="16"
+              @click.native.prevent="editBill(bill)"
+            />
+
+            <action-btn
+              modifierClass="btn-outline-danger"
               tooltip="Remove this bill"
+              icon="fontawesome/close"
+              size="16"
               @click.native.prevent="removeBill(bill)"
             />
           </td>
@@ -35,7 +46,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 
-import RemoveBtn from '@/components/RemoveBtn'
+import ActionBtn from '@/components/utils/ActionBtn'
 
 export default {
   computed: {
@@ -49,13 +60,17 @@ export default {
   props: ['mgmtPayPeriod'],
 
   methods: {
+    editBill(bill) {
+      this.$emit('editBill', bill)
+    },
+
     removeBill(bill) {
       this.$store.dispatch('bills/remove', bill)
     },
   },
 
   components: {
-    RemoveBtn,
+    ActionBtn,
   },
 }
 </script>

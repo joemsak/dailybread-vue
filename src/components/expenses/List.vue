@@ -21,8 +21,11 @@
           <td>{{ expense.name }}</td>
           <td class="text-right">{{ expense.amount | currency }}</td>
           <td class="text-right">
-            <remove-btn
+            <action-btn
+              modifierClass="btn-outline-danger"
               tooltip="Remove this expense"
+              icon="fontawesome/close"
+              size="16"
               @click.native.prevent="removeExpense(expense)"
             />
           </td>
@@ -39,7 +42,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import RemoveBtn from '@/components/RemoveBtn'
+import ActionBtn from '@/components/utils/ActionBtn'
 
 export default {
   computed: mapState('expenses', ['expenses']),
@@ -51,7 +54,7 @@ export default {
   },
 
   components: {
-    RemoveBtn,
+    ActionBtn,
   },
 }
 </script>
