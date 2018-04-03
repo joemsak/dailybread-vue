@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import DbNav from './Nav'
+import DbNav from '@/layout/Nav'
 
 export default {
   components: {

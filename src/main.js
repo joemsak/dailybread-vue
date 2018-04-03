@@ -13,7 +13,7 @@ import Vue2Filters from 'vue2-filters'
 Vue.use(Vue2Filters)
 Vue.config.productionTip = false
 
-import CurrentUser from '@/CurrentUser'
+import CurrentUser from '@/mixins/CurrentUser'
 
 Vue.mixin(CurrentUser)
 

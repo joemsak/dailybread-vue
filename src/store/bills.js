@@ -1,7 +1,7 @@
 import { firebaseAction } from 'vuexfire'
 import _ from 'lodash'
 
-import { dbBillsRef } from '@/firebaseConfig'
+import { dbBillsRef } from '@/db/firebaseConfig'
 
 export default {
   state: {
