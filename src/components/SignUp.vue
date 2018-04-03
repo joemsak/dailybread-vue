@@ -1,11 +1,11 @@
 <template>
   <div class="row justify-content-md-center">
-    <div v-if="attemptingSignUp" class="alert alert-primary" role="alert">
-      Signing you up...
+    <div v-if="attemptingSignIn" class="alert alert-primary mt-3" role="alert">
+      Signing you in...
     </div>
 
     <form
-      v-if="currentUser.guest && !attemptingSignUp"
+      v-if="currentUser.guest && !attemptingSignIn"
       @submit.prevent="handleSubmit"
     >
       <div class="form-group">
@@ -27,7 +27,7 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-outline-primary">Sign up</button>
+      <button type="submit" class="btn btn-outline-primary">Sign in</button>
     </form>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
   
   data () {
     return {
-      attemptingSignUp: false,
+      attemptingSignIn: false,
       
       newUser: {
         email: window.localStorage.getItem('db-currentUser-email'),
@@ -60,26 +60,14 @@ export default {
 
   methods: {
     handleSubmit () {
-      this.attemptingSignUp = true
+      this.attemptingSignIn = true
       
-      firebase.auth().createUserWithEmailAndPassword(
+      firebase.auth().signInWithEmailAndPassword(
         this.newUser.email,
         this.newUser.password
       ).then(() => {
-        this.attemptingSignUp = false
+        this.attemptingSignIn = false
         this.$router.push("/")
-      }).catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          firebase.auth().signInWithEmailAndPassword(
-            this.newUser.email,
-            this.newUser.password
-          ).then(() => {
-            this.attemptingSignUp = false
-            this.$router.push("/")
-          })
-        } else {
-          console.error(error.code)
-        }
       })
     },
   },
