@@ -53,7 +53,8 @@ export default {
     ...mapGetters('bills', ['payPeriod1', 'payPeriod2']),
 
     bills () {
-      return this[`payPeriod${this.mgmtPayPeriod}`] || []
+      const collection = this[`payPeriod${this.mgmtPayPeriod}`] || []
+      return collection.reverse()
     },
   },
 
@@ -61,7 +62,7 @@ export default {
 
   methods: {
     editBill(bill) {
-      this.$emit('editBill', bill)
+      this.$store.dispatch('bills/edit', bill)
     },
 
     removeBill(bill) {

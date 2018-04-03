@@ -9,7 +9,8 @@
         ref="billName"
         class="form-control"
         aria-label="Name"
-        v-model="newBill.name"
+        :value="bill.name"
+        @input="modifyBill"
       />
     </div>
 
@@ -24,9 +25,11 @@
         <input
           type="number"
           id="amount"
+          ref="billAmount"
           class="form-control"
           aria-label="Amount (to the nearest dollar)"
-          v-model.number="newBill.amount"
+          :value="bill.amount"
+          @input="modifyBill"
         />
 
         <div class="input-group-append">
@@ -46,24 +49,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
-  data () {
-    return {
-      newBill: {},
-    }
-  },
-  
   props: ['mgmtPayPeriod'],
 
-  computed: mapGetters(['remaining']),
+  computed: {
+    ...mapGetters(['remaining']),
+    ...mapState('bills', ['editing', 'bill']),
+
+    actionName () {
+      return this.editing ? 'bills/update' : 'bills/add'
+    },
+  },
 
   methods: {
+    modifyBill (evt) {
+      let payload = {}
+      payload[evt.target.id] = evt.target.value
+      this.$store.dispatch("bills/modifyBill", payload)
+    },
+
     handleSubmit() {
-      this.$store.dispatch('bills/add', this.newBill)
+      this.$store.dispatch(this.actionName)
         .then(() => {
-          this.newBill = {}
           this.$refs.billName.focus()
         })
     },

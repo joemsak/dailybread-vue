@@ -9,7 +9,8 @@
         ref="expenseName"
         class="form-control"
         aria-label="Name"
-        v-model="newExpense.name"
+        :value="expense.name"
+        @input="modifyExpense"
       />
     </div>
 
@@ -21,7 +22,8 @@
         id="category"
         class="form-control"
         aria-label="Category"
-        v-model="newExpense.category"
+        :value="expense.category"
+        @input="modifyExpense"
       />
     </div>
 
@@ -38,7 +40,8 @@
           id="amount"
           class="form-control"
           aria-label="Amount (to the nearest dollar)"
-          v-model.number="newExpense.amount"
+          :value="expense.amount"
+          @input="modifyExpense"
         />
 
         <div class="input-group-append">
@@ -60,26 +63,29 @@
 <script>
 import moment from 'moment'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
-  data () {
-    return {
-      newExpense: {},
-    }
+  computed: {
+    ...mapGetters(['remaining']),
+
+    ...mapState('expenses', ['editing', 'expense']),
+
+    actionName () {
+      return this.editing ? 'expenses/update' : 'expenses/add'
+    },
   },
-  
-  computed: mapGetters(['remaining']),
 
   methods: {
-    handleSubmit() {
-      this.newExpense.madeOn = moment().format()
+    modifyExpense (evt) {
+      let payload = {}
+      payload[evt.target.id] = evt.target.value
+      this.$store.dispatch("expenses/modifyExpense", payload)
+    },
 
-      this.$store.dispatch('expenses/add', this.newExpense)
-        .then(() => {
-          this.newExpense = {}
-          this.$refs.expenseName.focus()
-        })
+    handleSubmit() {
+      this.$store.dispatch(this.actionName)
+        .then(() => this.$refs.expenseName.focus())
     },
   },
 }
