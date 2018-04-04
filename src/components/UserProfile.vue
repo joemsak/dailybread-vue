@@ -17,10 +17,32 @@
         </label>
 
         <input
-          name="displayName"
+          id="displayName"
           type="text"
           class="form-control"
           v-model="newDisplayName"
+        />
+      </div>
+
+      <div class="form-group">
+        <strong>Email:</strong> {{ this.currentUser.email }}
+
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          placeholder="Change your email"
+          v-model="newEmail"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          placeholder="Change your password"
+          v-model="newPassword"
         />
       </div>
 
@@ -38,15 +60,25 @@ export default {
   data () {
     return {
       newDisplayName: '',
+      newEmail: '',
+      newPassword: '',
     }
   },
 
   methods: {
     handleSubmit () {
-      this.$store.dispatch('updateCurrentUser', {
+      this.$store.dispatch('user/updateCurrentUser', {
         displayName: this.newDisplayName,
-      }).then(() => { this.newDisplayName = '' })
+        email: this.newEmail,
+        password: this.newPassword
+      }).then(() => this.reset())
     },
+
+    reset () {
+      this.newDisplayName = ''
+      this.newEmail = ''
+      this.newPassword = ''
+    }
   },
 }
 </script>
