@@ -1,4 +1,4 @@
-<template>  
+<template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link to="/" class="navbar-brand">Dailybread</router-link>
 
@@ -40,11 +40,11 @@
           </router-link>
         </li>
       </ul>
-          
+
       <span class="navbar-text">
         Welcome, {{ currentUser.displayName }}
         <template v-if="!currentUser.guest">
-          |          
+          |
           <a
             href="#"
             @click.prevent="logOut"
@@ -64,7 +64,7 @@ export default {
   methods: {
     logOut () {
       firebase.auth().signOut()
-      this.$router.push('/')
+      this.$router.push('/signin')
     },
   },
 }

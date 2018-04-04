@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 import firebase from 'firebase'
 
-import SignUp from '@/components/SignUp'
+import SignIn from '@/components/SignIn'
 import UserProfile from '@/components/UserProfile'
 import Bills from '@/components/bills'
 import Expenses from '@/components/expenses'
@@ -23,9 +23,9 @@ const router = new Router({
       },
     },
     {
-      path: '/signup',
-      name: 'SignUp',
-      component: SignUp,
+      path: '/signin',
+      name: 'SignIn',
+      component: SignIn,
     },
     {
       path: '/profile',
@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if(requiresAuth && !currentUser) {
-    next({ name: 'SignUp' })
+    next({ name: 'SignIn', query: { from: to.path } })
   } else {
     next()
   }

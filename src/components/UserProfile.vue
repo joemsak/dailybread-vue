@@ -18,7 +18,7 @@
 
         <input
           name="displayName"
-          type="text" 
+          type="text"
           class="form-control"
           v-model="newDisplayName"
         />
@@ -33,8 +33,8 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'SignUp',
-  
+  name: 'UserProfile',
+
   data () {
     return {
       newDisplayName: '',

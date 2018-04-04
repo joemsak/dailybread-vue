@@ -21,7 +21,7 @@
         <label for="password">Password</label>
         <input
           name="password"
-          type="password" 
+          type="password"
           class="form-control"
           v-model="newUser.password"
         />
@@ -36,12 +36,12 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'SignUp',
-  
+  name: 'SignIn',
+
   data () {
     return {
       attemptingSignIn: false,
-      
+
       newUser: {
         email: window.localStorage.getItem('db-currentUser-email'),
         password: '',
@@ -61,13 +61,13 @@ export default {
   methods: {
     handleSubmit () {
       this.attemptingSignIn = true
-      
+
       firebase.auth().signInWithEmailAndPassword(
         this.newUser.email,
         this.newUser.password
       ).then(() => {
         this.attemptingSignIn = false
-        this.$router.push("/")
+        this.$router.push(this.$route.query.from || "/")
       })
     },
   },
