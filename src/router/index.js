@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if(requiresAuth && !currentUser) {
-    next({ name: 'SignUp' })
+    next({ name: 'SignUp', query: { from: to.path } })
   } else {
     next()
   }

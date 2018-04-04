@@ -54,8 +54,8 @@
 <script>
 import { mapState } from 'vuex'
 
-import BillsForm from '@/components/bills/form'
-import BillsList from '@/components/bills/list'
+import BillsForm from './Form'
+import BillsList from './List'
 
 export default {
   computed: mapState(['currentPayPeriod', 'mgmtPayPeriod']),
