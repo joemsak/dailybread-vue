@@ -42,8 +42,8 @@
       </ul>
           
       <span class="navbar-text">
-        Welcome, {{ currentUser.displayName }}
-        <template v-if="!currentUser.guest">
+        Welcome, {{ currentUser ? currentUser.displayName : 'Guest' }}
+        <template v-if="currentUser">
           |          
           <a
             href="#"
@@ -64,7 +64,7 @@ export default {
   methods: {
     logOut () {
       firebase.auth().signOut()
-      this.$router.push('/')
+      this.$router.push('/signup')
     },
   },
 }

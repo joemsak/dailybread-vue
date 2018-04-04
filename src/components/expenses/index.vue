@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import ExpenseForm from '@/components/expenses/form'
-import ExpensesList from '@/components/expenses/list'
+import ExpenseForm from './Form'
+import ExpensesList from './List'
 
 export default {
   components: {

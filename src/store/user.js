@@ -2,27 +2,19 @@ import firebase from 'firebase'
 
 export default {
   state: {
-    currentUser: {
-      displayName: 'Guest',
-      guest: true,
-      uid: null,
-    },
+    currentUser: null,
   },
 
   mutations: {
     set (state, user) {
       state.currentUser = {
         displayName: user.displayName,
-        guest: false,
         uid: user.uid,
       }
     },
 
     setGuest (state) {
-      state.currentUser = {
-        displayName: 'Guest',
-        guest: true,
-      }
+      state.currentUser = null
     },
   },
 

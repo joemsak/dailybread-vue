@@ -5,7 +5,7 @@
     </div>
 
     <form
-      v-if="currentUser.guest && !attemptingSignIn"
+      v-if="!currentUser && !attemptingSignIn"
       @submit.prevent="handleSubmit"
     >
       <div class="form-group">
@@ -67,7 +67,7 @@ export default {
         this.newUser.password
       ).then(() => {
         this.attemptingSignIn = false
-        this.$router.push("/")
+        this.$router.push(this.$route.query.from || '/')
       })
     },
   },

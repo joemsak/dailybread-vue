@@ -69,7 +69,7 @@ export default new Vuex.Store({
     },
 
     remaining: (state, getters) => (desiredPayPeriod) => {
-      if (state.user.currentUser.guest) return 3750
+      if (!state.user.currentUser) return 3750
 
       desiredPayPeriod = desiredPayPeriod || state.currentPayPeriod
 
@@ -96,31 +96,32 @@ export default new Vuex.Store({
 
   actions: {
     initApp ({ commit, dispatch }, user) {
-      if (!!user.guest) {
+      if (!user) {
         commit('user/setGuest')
       } else {
         commit('user/set', user)
         dispatch('expenses/set')
         dispatch('bills/set')
+
+        let endingDate
+
+        if (moment().date() < 15) {
+          endingDate = moment().date(15)
+        } else {
+          endingDate = moment().endOf('month')
+        }
+
+        while([0, 6].includes(endingDate.day())) {
+          endingDate = endingDate.subtract(1, 'days')
+        }
+
+        if (endingDate.date() <= 15) {
+          commit('currentPayPeriod', 1)
+        } else {
+          commit('currentPayPeriod', 2)
+        }
       }
 
-      let endingDate
-
-      if (moment().date() < 15) {
-        endingDate = moment().date(15)
-      } else {
-        endingDate = moment().endOf('month')
-      }
-
-      while([0, 6].includes(endingDate.day())) {
-        endingDate = endingDate.subtract(1, 'days')
-      }
-
-      if (endingDate.date() <= 15) {
-        commit('currentPayPeriod', 1)
-      } else {
-        commit('currentPayPeriod', 2)
-      }
     },
 
     updateMgmtPayPeriod ({ commit, dispatch }, period) {
