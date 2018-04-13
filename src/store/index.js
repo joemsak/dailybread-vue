@@ -116,7 +116,7 @@ export default new Vuex.Store({
         endingDate = endingDate.subtract(1, 'days')
       }
 
-      if (endingDate.date() <= 15) {
+      if (moment().date() < endingDate.date()) {
         commit('currentPayPeriod', 1)
       } else {
         commit('currentPayPeriod', 2)

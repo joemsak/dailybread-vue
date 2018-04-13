@@ -48,12 +48,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import ActionBtn from '@/components/utils/ActionBtn'
 
 export default {
-  computed: mapState('expenses', ['expenses']),
+  computed: mapGetters('expenses', ['expenses']),
 
   methods: {
     editExpense(expense) {
