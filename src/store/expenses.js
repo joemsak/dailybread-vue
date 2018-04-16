@@ -13,8 +13,8 @@ export default {
   getters: {
     expenses (state, getters, rootState, rootGetters) {
       return state.expenses.filter(e => {
-        return moment(e.madeOn).isSameOrAfter(rootGetters.previousPayDate) &&
-                 moment(e.madeOn).isBefore(rootGetters.nextPayDate)
+        return moment(e.madeOn).isSameOrAfter(rootGetters.previousPayDate()) &&
+                 moment(e.madeOn).isBefore(rootGetters.nextPayDate())
       })
     },
 
