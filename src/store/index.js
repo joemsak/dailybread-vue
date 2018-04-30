@@ -44,6 +44,9 @@ export default new Vuex.Store({
         endingDate = moment().endOf('month')
       }
 
+      if (moment().date() === moment().endOf('month').date())
+        endingDate = endingDate.add(1, 'months')
+
       while ([0, 6].includes(endingDate.day())) {
         endingDate = endingDate.subtract(1, 'days')
       }
@@ -60,6 +63,9 @@ export default new Vuex.Store({
       } else {
         beginningDate = moment().date(15)
       }
+
+      if (moment().date() === moment().endOf('month').date())
+        beginningDate = beginningDate.add(1, 'month')
 
       while ([0, 6].includes(beginningDate.day())) {
         beginningDate = beginningDate.subtract(1, 'days')
@@ -105,18 +111,23 @@ export default new Vuex.Store({
       }
 
       let endingDate
+      const fifteenth = moment().date(15)
+      const endOfMonth = moment().endOf('month')
 
-      if (moment().date() < 15) {
-        endingDate = moment().date(15)
+      if (moment().isBefore(fifteenth)) {
+        endingDate = fifteenth
       } else {
-        endingDate = moment().endOf('month')
+        endingDate = endOfMonth
       }
 
       while([0, 6].includes(endingDate.day())) {
         endingDate = endingDate.subtract(1, 'days')
       }
 
-      if (endingDate.date() >= 15) {
+      if (
+        endingDate.isSameOrBefore(fifteenth) &&
+          moment().isSameOrAfter(endingDate)
+      ) {
         commit('currentPayPeriod', 2)
       } else {
         commit('currentPayPeriod', 1)
