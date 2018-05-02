@@ -13,15 +13,17 @@ export default {
   getters: {
     expenses (state, getters, rootState, rootGetters) {
       return state.expenses.filter(e => {
-        return moment(e.madeOn).isSameOrAfter(rootGetters.previousPayDate()) &&
-                 moment(e.madeOn).isBefore(rootGetters.nextPayDate())
+        return !!e.madeOn &&
+          moment(e.madeOn).isSameOrAfter(rootGetters.previousPayDate()) &&
+            moment(e.madeOn).isBefore(rootGetters.nextPayDate())
       })
     },
 
     total: (state) => (prevPayDate, nextPayDate) => {
       const expenses = state.expenses.filter(e => {
-        return moment(e.madeOn).isSameOrAfter(prevPayDate) &&
-                 moment(e.madeOn).isBefore(nextPayDate)
+        return !!e.madeOn &&
+          moment(e.madeOn).isSameOrAfter(prevPayDate) &&
+            moment(e.madeOn).isBefore(nextPayDate)
       })
 
       return expenses.reduce((acc, expense) => {
