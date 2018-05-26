@@ -13,7 +13,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@vue/test-utils": "^1.0.0-beta.14",
     "firebase": "^4.12.1",
+    "flush-promises": "^1.0.0",
     "moment": "^2.22.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
